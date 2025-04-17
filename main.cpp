@@ -39,7 +39,8 @@ class Esbirro: public Entidad{
         bool cano;
 };
 
-void get_input(int* vida_heroe, int* cant_esbirros, int* vida_esbirros, int* esbirro_cano){
+
+void get_input(int* vida_heroe, int* cant_esbirros, deque<Esbirro>* deq_esbirros){
 
     
     cin >> *vida_heroe;
@@ -54,22 +55,38 @@ void get_input(int* vida_heroe, int* cant_esbirros, int* vida_esbirros, int* esb
     };
 
 
-    // CREAR CLASSES EN EL LOOP
-    vida_esbirros = new int[*cant_esbirros];
-    esbirro_cano = new int[*cant_esbirros];
+    // Leer valores de esbirros
+    int* vida_esbirros = new int[*cant_esbirros];
+    int* ataque_esbirros = new int[*cant_esbirros];
+    int* cano_esbirros = new int[*cant_esbirros];
     
     for(int i = 0; i < *cant_esbirros; i++){
-        cin >> esbirro_cano[i];
+        cin >> vida_esbirros[i];
+    }
+    for(int i = 0; i < *cant_esbirros; i++){
+        cin >> ataque_esbirros[i];
+    }
+    for(int i = 0; i < *cant_esbirros; i++){
+        cin >> cano_esbirros[i];
+    }
+
+    // Crear los objetos esbirros y ingresarlos a la deque
+    for(int i = 0; i < *cant_esbirros; i++){
+        
+        int cano = true;
+        if(cano_esbirros[i] == 0) cano = false;
+        
+        Esbirro esb = {vida_esbirros[i], ataque_esbirros[i], cano};
+        deq_esbirros->push_back(esb);
     }
 }
 
 int main(){
     int vida_heroe = 0;
     int cant_esbirros = 0;
-    int* vida_esbirros;
-    int* esbirro_cano;
+    deque<Esbirro> deq_esbirros;
 
-    get_input(&vida_heroe, &cant_esbirros, vida_esbirros,esbirro_cano);
+    get_input(&vida_heroe, &cant_esbirros, &deq_esbirros);
 
     
     return 0;
