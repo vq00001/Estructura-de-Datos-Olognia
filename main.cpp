@@ -15,18 +15,29 @@ La quinta línea consta de n valores binarios separados por espacios, indicando 
 los CANO se dividirán luego del segundo ataque recibido.
 */
 
-class entidad{
+class Entidad{
     public:
+    
+        int get_vida() {return vida;}
+        int get_ataque() {return ataque;}
+        int set_vida(int val) {vida = val;}
+        int set_ataque(int val) {ataque = val;}
+    private:
         int vida;
         int ataque;
 };
 
-class esbirro: public entidad{
+class Esbirro: public Entidad{
     public:
+        Esbirro(int vida, int ataque, bool is_cano ){
+            this->set_vida(vida);
+            this->set_ataque(ataque);
+            this->cano = is_cano;
+        };
+        bool is_cano(){return cano;}
+    private:
         bool cano;
 };
-
-
 
 void get_input(int* vida_heroe, int* cant_esbirros, int* vida_esbirros, int* esbirro_cano){
 
