@@ -1,4 +1,10 @@
-#include <bits/stdc++.h>
+/*#include <bits/stdc++.h>*/
+#include <iostream>
+#include <fstream>
+#include <deque>
+#include <vector>
+#include <string>
+
 using namespace std;
 
 
@@ -14,6 +20,31 @@ La quinta línea consta de n valores binarios separados por espacios, indicando 
 /*
 los CANO se dividirán luego del segundo ataque recibido.
 */
+
+vector<int> read_file(const string& archivo) {
+    ifstream file(archivo);
+    if (!file.is_open()) {
+        cerr << "Error al abrir el archivo: " << archivo << endl;
+        exit(1);
+    }
+
+    vector<int> data;
+    int valor;
+
+    // Leer todos los valores del archivo y almacenarlos en el vector
+    while (file >> valor) {
+        data.push_back(valor);
+    }
+
+    // Verificar si se leyeron los valores correctamente
+    if (data.size() < 5) {
+        cerr << "Error: El archivo no contiene suficientes datos." << endl;
+        exit(1);
+    }
+
+    file.close();
+    return data;
+}
 
 class Entidad{
     public:
@@ -40,54 +71,54 @@ class Esbirro: public Entidad{
 };
 
 
-void get_input(int* vida_heroe, int* cant_esbirros, deque<Esbirro>* deq_esbirros){
+void get_input(string* nombre_archivo, deque<Esbirro>* deq_esbirros){
 
-    
-    cin >> *vida_heroe;
-    while(vida_heroe <= 0){
-        cin >> *vida_heroe;
-    };
+    vector<int> data = read_file(*nombre_archivo);
 
-    
-    cin >> *cant_esbirros;
-    while(*cant_esbirros <= 0){
-        cin >> *cant_esbirros;
-    };
-
+    // Verificar que los valores sean válidos
+    if (data[0] <= 0 || data[1] <= 0){
+        cerr << "Error: La vida del héroe y la cantidad de esbirros deben ser mayores a cero." << endl;
+        exit(1);
+    }
+    // Leer valores de vida del héroe y cantidad de esbirros
+    int vida_heroe = data[0];
+    int cant_esbirros = data[1];
 
     // Leer valores de esbirros
-    int* vida_esbirros = new int[*cant_esbirros];
-    int* ataque_esbirros = new int[*cant_esbirros];
-    int* cano_esbirros = new int[*cant_esbirros];
-    
-    for(int i = 0; i < *cant_esbirros; i++){
-        cin >> vida_esbirros[i];
-    }
-    for(int i = 0; i < *cant_esbirros; i++){
-        cin >> ataque_esbirros[i];
-    }
-    for(int i = 0; i < *cant_esbirros; i++){
-        cin >> cano_esbirros[i];
+    for (int i = 0; i < cant_esbirros; i++){
+
+        // Verificar que lo valores sean válidos
+        if (data[2 + i] <= 0 || data[2 + cant_esbirros + i] <= 0 || (data[2 + 2*cant_esbirros + i] != 0 && data[2 + 2*cant_esbirros + i] != 1)){
+            cerr << "Error: La vida y el ataque de los esbirros deben ser mayores a cero, y el valor de cano debe ser 0 o 1." << endl;
+            exit(1);
+        }
+
+        // Leer los valores de vida, ataque y cano
+        int vida = data[2 + i];
+        int ataque = data[2 + cant_esbirros + i];
+        bool cano = data[2 + 2*cant_esbirros + i] == 1;
+
+        Esbirro esb(vida, ataque, cano);
+        deq_esbirros->push_back(esb);
     }
 
-    // Crear los objetos esbirros y ingresarlos a la deque
-    for(int i = 0; i < *cant_esbirros; i++){
-        
-        int cano = true;
-        if(cano_esbirros[i] == 0) cano = false;
-        
-        Esbirro esb = {vida_esbirros[i], ataque_esbirros[i], cano};
-        deq_esbirros->push_back(esb);
+    // Imprimir los valores leídos (para verificar)
+    cout << "Vida del héroe: " << vida_heroe << endl;
+    cout << "Cantidad de esbirros: " << cant_esbirros << endl;
+    cout << "Esbirros:" << endl;
+    for (int i = 0; i < cant_esbirros; i++){
+        cout << "Esbirro " << i + 1 << ": " << endl;
+        cout << "Vida: " << deq_esbirros->at(i).get_vida() << endl;
+        cout << "Ataque: " << deq_esbirros->at(i).get_ataque() << endl;
+        cout << "Cano: " << (deq_esbirros->at(i).is_cano() ? "Sí" : "No") << endl;
     }
 }
 
-int main(){
-    int vida_heroe = 0;
-    int cant_esbirros = 0;
-    deque<Esbirro> deq_esbirros;
-
-    get_input(&vida_heroe, &cant_esbirros, &deq_esbirros);
-
+int main() {
     
+    deque<Esbirro> deq_esbirros;
+    string nombre_archivo = "Ejemplo.txt"; // Luego se puede poner un cin
+
+    get_input(&nombre_archivo, &deq_esbirros);
     return 0;
 }
