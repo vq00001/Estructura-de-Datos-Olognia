@@ -64,10 +64,15 @@ class Esbirro: public Entidad{
             this->set_vida(vida);
             this->set_ataque(ataque);
             this->cano = is_cano;
+
+            atq_recibidos = 0;
         };
         bool get_cano(){return cano;}
+        int get_atq_recibidos(){return atq_recibidos;} 
+        void set_atq_recibidos(int val){atq_recibidos = val;}
     private:
         bool cano;
+        int atq_recibidos; // ataques recibidos por el esbirro
 };
 
 
@@ -109,7 +114,7 @@ void get_input(string* nombre_archivo, Entidad* mechon, deque<Esbirro>* deq_esbi
 
 int main() {
 
-    int daño_realizado = 0, contador = 0, esbirros_derrotados = 0;
+    int daño_realizado = 0, esbirros_derrotados = 0;
     Entidad mechon;
     deque<Esbirro> deq_esbirros;
     string nombre_archivo = "Ejemplo.txt"; // Luego se puede poner un cin
@@ -132,12 +137,12 @@ int main() {
         }
         
         // El mechón ataca al esbirro
-        int nueva_vida_esbirro = deq_esbirros[0].get_vida() - mechon.get_ataque();
+        int nueva_vida_esbirro = deq_esbirros.front().get_vida() - mechon.get_ataque();
         deq_esbirros.front().set_vida(nueva_vida_esbirro);
         daño_realizado += mechon.get_ataque(); //
 
         if (deq_esbirros.front().get_cano()) {
-            contador++;                                
+            deq_esbirros.front().set_atq_recibidos(deq_esbirros.front().get_atq_recibidos() + 1);                                
         }
         
         // El esbirro ataca al mechón
@@ -146,8 +151,9 @@ int main() {
         // Si el esbirro es CANO, se divide luego de la segunda vez que recibe daño
         bool esbirro_es_cano = deq_esbirros.front().get_cano();
         bool esbirro_sobrevive = deq_esbirros.front().get_vida() > 1;
+        bool ataque_recibido_suficiente = deq_esbirros.front().get_atq_recibidos() == 2;
 
-        if (esbirro_es_cano && esbirro_sobrevive && contador == 2) {
+        if (esbirro_es_cano && esbirro_sobrevive && ataque_recibido_suficiente) {
             int vida = deq_esbirros.front().get_vida() - 1;
             int ataque = deq_esbirros.front().get_ataque() - 1;
 
@@ -156,7 +162,6 @@ int main() {
             deq_esbirros.pop_front();
             deq_esbirros.push_front(division);
             deq_esbirros.push_front(division);
-            contador = 0;
             continue;
         }
 
