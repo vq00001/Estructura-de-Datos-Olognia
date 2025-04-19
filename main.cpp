@@ -51,8 +51,8 @@ class Entidad{
     
         int get_vida() {return vida;}
         int get_ataque() {return ataque;}
-        int set_vida(int val) {vida = val;}
-        int set_ataque(int val) {ataque = val;}
+        void set_vida(int val) {vida = val;}
+        void set_ataque(int val) {ataque = val;}
     private:
         int vida;
         int ataque;
@@ -125,25 +125,34 @@ int main() {
             return 0;
         }
 
-        // Si el mechón derrota a 5 esbirros, aumenta su ataque
+        // Cada vez que el mechón derrota a 5 esbirros, aumenta su ataque
         if (esbirros_derrotados == 5) {
             mechon.set_ataque(mechon.get_ataque() + 1);
             esbirros_derrotados = 0;
         }
         
         // El mechón ataca al esbirro
-        deq_esbirros[0].set_vida(deq_esbirros[0].get_vida() - mechon.get_ataque());
-        daño_realizado += mechon.get_ataque();
+        int nueva_vida_esbirro = deq_esbirros[0].get_vida() - mechon.get_ataque();
+        deq_esbirros.front().set_vida(nueva_vida_esbirro);
+        daño_realizado += mechon.get_ataque(); //
+
         if (deq_esbirros.front().get_cano()) {
-            contador++;
+            contador++;                                
         }
         
         // El esbirro ataca al mechón
-        mechon.set_vida(mechon.get_vida() - deq_esbirros[0].get_ataque());
+        mechon.set_vida(mechon.get_vida() - deq_esbirros.front().get_ataque());
         
         // Si el esbirro es CANO, se divide luego de la segunda vez que recibe daño
-        if (deq_esbirros[0].get_cano() && deq_esbirros[0].get_vida() > 1 && contador == 2) {
-            Esbirro division(deq_esbirros.front().get_vida() - 1, deq_esbirros.front().get_ataque() - 1, false);
+        bool esbirro_es_cano = deq_esbirros.front().get_cano();
+        bool esbirro_sobrevive = deq_esbirros.front().get_vida() > 1;
+
+        if (esbirro_es_cano && esbirro_sobrevive && contador == 2) {
+            int vida = deq_esbirros.front().get_vida() - 1;
+            int ataque = deq_esbirros.front().get_ataque() - 1;
+
+            // Sacar el esbirro original y reemplazarlo por dos clones
+            Esbirro division(vida, ataque, false);
             deq_esbirros.pop_front();
             deq_esbirros.push_front(division);
             deq_esbirros.push_front(division);
@@ -152,8 +161,8 @@ int main() {
         }
 
         // Si el esbirro es derrotado, se elimina
-        if (deq_esbirros[0].get_vida() <= 0) {
-            daño_realizado += deq_esbirros[0].get_vida();
+        if (deq_esbirros.front().get_vida() <= 0) {
+            daño_realizado += deq_esbirros.front().get_vida();
             deq_esbirros.pop_front();
             esbirros_derrotados++;
         }
