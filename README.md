@@ -12,4 +12,6 @@ Ejemplo: .\a.exe Caso1.txt
 - Cuarta linea: n números enteros representando el ataque de los esbirros.
 - Quinta linea: n números enteros representando si los esbirros son CANOs, con 0 si no lo es y 1 en el caso contrario.
 
-Salida: un valor numérico y un texto separados por un salto de línea. El valor numérico corresponde al daño total que el mechón causó a los esbirros, mientras que el texto será "EZ pizi" si el mechón logra salvar al pueblo o "RIP mechón" si es que este no logra su cometido.
+Salida: un valor numérico y un texto separados por un salto de línea. El valor numérico corresponde al daño total que el mechón causó a los esbirros, mientras que el texto será "EZ pizi" si el mechón logra salvar al pueblo o "RIP mechón" si es que este no logra su cometido. En el caso del ingreso de varios archivos se indicará el nombre del archivo y las salidas estarán separadas por lineas.
+
+![alt text](image.png)

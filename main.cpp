@@ -123,7 +123,7 @@ void simular_batalla(Entidad *mechon_inf, deque<Esbirro> *deq){
 
         // Si el mechón no tiene vida, se termina el juego
         if (mechon.get_vida() <= 0) {
-            cout << daño_realizado << endl << "RIP mechón" << endl;
+            cout << daño_realizado << endl << "RIP mechon" << endl;
             return;
         }
 
@@ -170,11 +170,12 @@ void simular_batalla(Entidad *mechon_inf, deque<Esbirro> *deq){
         }
     }
     
-    // Si el mechón sobrevive
-    if (mechon.get_vida() > 0) {
-        cout << daño_realizado << endl << "EZ pizi" << endl;
-    } 
+    /*
+     * Si se llega a este punto todos los esbirros han sido derrotados, por lo que aunque la vida del mechon halla llegado a 0 al vencer al último esbirro, el logró salvar al pueblo. Por esto mostramos el mensaje ganador.
+     */
 
+    cout << daño_realizado << endl << "EZ pizi" << endl;
+    return;
 }
 int main(int argc, char *argv[]) {
 
