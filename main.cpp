@@ -112,21 +112,11 @@ void get_input(string* nombre_archivo, Entidad* mechon, deque<Esbirro>* deq_esbi
     }
 }
 
-int main(int argc, char *argv[]) {
+void simular_batalla(Entidad *mechon_inf, deque<Esbirro> *deq){
 
-    
     int daño_realizado = 0, esbirros_derrotados = 0;
-    Entidad mechon;
-    deque<Esbirro> deq_esbirros;
-    string nombre_archivo = "Ejemplo.txt"; // Luego se puede poner un cin
-
-    // leer Ejemplos.txt por default
-    if(argc > 1) 
-
-       nombre_archivo = argv[1];
-        
-    get_input(&nombre_archivo, &mechon, &deq_esbirros); 
-    
+    Entidad mechon = *mechon_inf;
+    deque<Esbirro>deq_esbirros = *deq;
 
     // Simulación de ataques
     while (!deq_esbirros.empty()) {
@@ -134,7 +124,7 @@ int main(int argc, char *argv[]) {
         // Si el mechón no tiene vida, se termina el juego
         if (mechon.get_vida() <= 0) {
             cout << daño_realizado << endl << "RIP mechón" << endl;
-            return 0;
+            return;
         }
 
         // Cada vez que el mechón derrota a 5 esbirros, aumenta su ataque
@@ -185,5 +175,33 @@ int main(int argc, char *argv[]) {
         cout << daño_realizado << endl << "EZ pizi" << endl;
     } 
 
+}
+int main(int argc, char *argv[]) {
+
+    
+    // leer Ejemplos.txt por default
+    if(argc > 1) 
+
+        for(int i = 1; i < argc; i++){
+
+            string nombre_archivo = argv[i];
+            cout << "--------------- ARCHIVO " << nombre_archivo <<  endl;
+
+            Entidad mechon;
+            deque<Esbirro> deq_esbirros;
+
+            get_input(&nombre_archivo, &mechon, &deq_esbirros); 
+            simular_batalla(&mechon, &deq_esbirros);
+
+
+    } else {
+        Entidad mechon;
+        deque<Esbirro> deq_esbirros;
+        string nombre_archivo = "Ejemplo.txt"; 
+
+        get_input(&nombre_archivo, &mechon, &deq_esbirros); 
+        simular_batalla(&mechon, &deq_esbirros);
+    }
+            
     return 0;
 }
