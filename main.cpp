@@ -112,14 +112,21 @@ void get_input(string* nombre_archivo, Entidad* mechon, deque<Esbirro>* deq_esbi
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 
+    
     int daño_realizado = 0, esbirros_derrotados = 0;
     Entidad mechon;
     deque<Esbirro> deq_esbirros;
     string nombre_archivo = "Ejemplo.txt"; // Luego se puede poner un cin
 
-    get_input(&nombre_archivo, &mechon, &deq_esbirros);
+    // leer Ejemplos.txt por default
+    if(argc > 1) 
+
+       nombre_archivo = argv[1];
+        
+    get_input(&nombre_archivo, &mechon, &deq_esbirros); 
+    
 
     // Simulación de ataques
     while (!deq_esbirros.empty()) {
